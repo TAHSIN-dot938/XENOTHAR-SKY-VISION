@@ -48,59 +48,76 @@ vec3 nlRenderShootingStar(vec3 viewDir, vec3 FOG_COLOR, float t) {
     SKY.write_text(source[:start] + replacement + source[end:], encoding="utf-8")
 
 def make_moon_atlas():
-    # Bedrock moon phase atlas: 4 columns x 2 rows, 256px per phase.
-    size, cols, rows = 256, 4, 2
+    # Use a real equirectangular lunar surface map (8K source) and bake it
+    # into Bedrock's 4x2 moon-phase atlas. The atlas keeps the game shader's
+    # expected layout while retaining authentic lunar maria/crater patterns.
+    import urllib.request
+    import io
+
+    source_url = "https://upload.wikimedia.org/wikipedia/commons/d/d1/Solarsystemscope_texture_8k_moon.jpg"
+    request = urllib.request.Request(
+        source_url,
+        headers={"User-Agent": "XENOTHAR-SKY-VISION/1.0 (Minecraft resource-pack build)"}
+    )
+    with urllib.request.urlopen(request, timeout=90) as response:
+        source_bytes = response.read()
+    lunar_map = Image.open(io.BytesIO(source_bytes)).convert("RGB")
+    src_w, src_h = lunar_map.size
+    src = lunar_map.load()
+
+    size, cols, rows = 512, 4, 2
     atlas = Image.new("RGBA", (size * cols, size * rows), (0, 0, 0, 0))
-    rng = random.Random(29032026)
-    craters = []
-    for _ in range(65):
-        x, y = rng.uniform(-0.92, 0.92), rng.uniform(-0.92, 0.92)
-        rad = rng.uniform(0.018, 0.095)
-        if x*x + y*y < 0.92:
-            craters.append((x, y, rad, rng.uniform(0.25, 0.85)))
     for phase_index in range(8):
-        tile = Image.new("RGBA", (size, size), (0,0,0,0))
+        tile = Image.new("RGBA", (size, size), (0, 0, 0, 0))
         px = tile.load()
-        # Sequence of eight illuminated phases; 0 full, then waning to new and waxing.
         angle = 2.0 * math.pi * phase_index / 8.0
         light_x, light_z = math.sin(angle), math.cos(angle)
         for y in range(size):
-            ny = (y - size/2) / (size*0.47)
+            ny = (y - size / 2) / (size * 0.47)
             for x in range(size):
-                nx = (x - size/2) / (size*0.47)
-                rr = nx*nx + ny*ny
+                nx = (x - size / 2) / (size * 0.47)
+                rr = nx * nx + ny * ny
                 if rr > 1.0:
                     continue
-                nz = math.sqrt(max(0.0, 1.0-rr))
-                illumination = max(0.0, nx*light_x + nz*light_z)
-                if phase_index == 0:
-                    illumination = max(0.0, nz)
-                # Fine lunar maria and albedo variation.
-                n = (math.sin(nx*43.0 + math.sin(ny*21.0))*0.5 +
-                     math.sin(ny*57.0 + nx*19.0)*0.25 +
-                     math.sin((nx+ny)*113.0)*0.12)
-                shade = 0.48 + 0.12*n + 0.40*illumination
-                # Soft terminator, natural limb darkening.
-                shade *= 0.72 + 0.28*nz
-                crater_delta = 0.0
-                for cx, cy, cr, depth in craters:
-                    dx, dy = nx-cx, ny-cy
-                    d = math.sqrt(dx*dx+dy*dy)
-                    if d < cr*1.35:
-                        ring = math.exp(-((d-cr*0.82)/(cr*0.13))**2)
-                        basin = math.exp(-((d)/(cr*0.72))**2)
-                        crater_delta += 0.045*ring - 0.105*basin*depth
-                shade = max(0.0, min(1.0, shade + crater_delta))
-                # Moon texture stays subdued, neutral grey, not over-saturated.
-                val = int(255 * shade)
-                alpha = int(255 * max(0.0, min(1.0, (illumination - 0.045) / 0.16)))
-                px[x,y] = (val, int(val*0.985), int(val*0.95), alpha)
-        tile = tile.filter(ImageFilter.GaussianBlur(0.25))
-        atlas.alpha_composite(tile, ((phase_index % cols)*size, (phase_index // cols)*size))
+                nz = math.sqrt(max(0.0, 1.0 - rr))
+
+                # Project the sphere onto the real equirectangular lunar map.
+                lon = math.atan2(nx, nz)
+                lat = math.asin(max(-1.0, min(1.0, ny)))
+                sx = int(((lon / (2.0 * math.pi)) + 0.5) * (src_w - 1)) % src_w
+                sy = max(0, min(src_h - 1, int((0.5 - lat / math.pi) * (src_h - 1))))
+                r, g, b = src[sx, sy]
+
+                # Directional phase lighting; preserve map detail without
+                # inventing craters or adding a synthetic surface pattern.
+                lambert = max(0.0, nx * light_x + nz * light_z)
+                limb = 0.68 + 0.32 * nz
+                light = (0.10 + 0.90 * lambert) * limb
+                alpha = int(255 * max(0.0, min(1.0, (lambert - 0.025) / 0.13)))
+                px[x, y] = (
+                    int(min(255, r * light)),
+                    int(min(255, g * light)),
+                    int(min(255, b * light)),
+                    alpha
+                )
+        tile = tile.filter(ImageFilter.GaussianBlur(0.18))
+        atlas.alpha_composite(tile, ((phase_index % cols) * size, (phase_index // cols) * size))
+
     MOON.parent.mkdir(parents=True, exist_ok=True)
     atlas.save(MOON, format="PNG", optimize=True)
+
+    credits = ROOT / "assets/textures/environment/MOON_TEXTURE_CREDITS.txt"
+    credits.write_text(
+        "Moon surface map: Solar System Scope, 8K lunar texture.\n"
+        "Based on NASA lunar elevation and imagery data; colors are slightly "
+        "more saturated and some gaps are filled with similar terrain.\n"
+        "Source: https://commons.wikimedia.org/wiki/File:Solarsystemscope_texture_8k_moon.jpg\n"
+        "License: Creative Commons Attribution 4.0 International (CC BY 4.0).\n"
+        "Adapted into an 8-phase Bedrock moon atlas by XENOTHAR SKY VISION.\n",
+        encoding="utf-8"
+    )
 
 if __name__ == "__main__":
     patch_meteors()
     make_moon_atlas()
-    print("Patched 3.5 meteor starts/sec with corrected travel direction and generated 8-phase high-detail moon atlas.")
+    print("Patched 3.5 meteor starts/sec with corrected travel direction and baked real 8K-source lunar surface map into an 8-phase atlas.")
