@@ -43,7 +43,7 @@ jobs:
         run: chmod +x build.sh && ./build.sh setup
       - name: Build Android resource pack
         working-directory: upstream
-        run: ./build.sh pack -p android -v 2
+        run: ./build.sh pack -p android -v 3
       - name: Normalize pack manifest version
         working-directory: upstream
         run: |
@@ -57,7 +57,7 @@ jobs:
                   for info, data in entries:
                       if info.filename == "manifest.json":
                           manifest = json.loads(data.decode("utf-8"))
-                          manifest["header"]["version"] = [2, 3, 4]
+                          manifest["header"]["version"] = [2, 4, 0]
                           for module in manifest.get("modules", []):
                               module["version"] = [2, 3, 4]
                           data = json.dumps(manifest, indent=2).encode("utf-8")
