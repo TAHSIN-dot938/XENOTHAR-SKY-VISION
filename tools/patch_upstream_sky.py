@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Apply XENOTHAR night-sky enhancements to the pinned Newb X Legacy build tree."""
+"""Apply XENOTHAR solar-cycle, golden-hour, and night-sky enhancements to pinned upstream."""
 from pathlib import Path
 import math, random
 from PIL import Image, ImageDraw, ImageFilter
