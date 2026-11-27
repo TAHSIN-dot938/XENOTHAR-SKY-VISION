@@ -16,7 +16,7 @@ def patch_meteors():
 vec3 nlRenderShootingStar(vec3 viewDir, vec3 FOG_COLOR, float t) {
   vec3 result = vec3(0.0);
   float nightMask = clamp(1.0 - FOG_COLOR.r - FOG_COLOR.g - FOG_COLOR.b, 0.0, 1.0);
-  for (int i = 0; i < 12; ++i) {
+  for (int i = 0; i < 3; ++i) {
     float eventId = floor(t * NL_SHOOTING_STAR_RATE) - float(i);
     float age = t - eventId / NL_SHOOTING_STAR_RATE;
     if (age >= 0.0 && age < NL_SHOOTING_STAR_LIFETIME) {
@@ -27,7 +27,7 @@ vec3 nlRenderShootingStar(vec3 viewDir, vec3 FOG_COLOR, float t) {
       float ca = cos(a), sa = sin(a);
       vec2 uv = viewDir.xz * (6.0 + 4.0 * r);
       uv = vec2(ca * uv.x + sa * uv.y, -sa * uv.x + ca * uv.y);
-      uv.x += phase * 2.0 - 1.0;
+      uv.x += 1.0 - 2.0 * phase;
       uv.x -= 2.0 * r + 3.5;
       uv.y += viewDir.y * 3.0;
       float glow = 1.0 - min(abs(uv.x - 0.95) * 20.0, 1.0);
@@ -103,4 +103,4 @@ def make_moon_atlas():
 if __name__ == "__main__":
     patch_meteors()
     make_moon_atlas()
-    print("Patched 20 meteor starts/sec and generated 8-phase high-detail moon atlas.")
+    print("Patched 3.5 meteor starts/sec with corrected travel direction and generated 8-phase high-detail moon atlas.")
