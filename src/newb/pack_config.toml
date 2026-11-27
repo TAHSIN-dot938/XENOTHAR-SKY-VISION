@@ -1,5 +1,5 @@
 name = "XENOTHAR SKY VISION"
-version = [2, 0, 0]
+version = [2, 1, 0]
 min_supported_mc_version = [1, 26, 60]
 description = '''
 §bXENOTHAR SKY VISION
@@ -47,4 +47,4 @@ description = "Reduced fog"
 [[subpack]]
 define = "DEFAULT"
 materials = []
-description = "Natural balanced profile"
+description = "Bright day · sharper shadows · lively grass · reflective waves"
