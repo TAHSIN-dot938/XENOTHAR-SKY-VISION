@@ -105,8 +105,8 @@
 #define NL_CLOUD3_SHADOW_OFFSET 0.24
 
 #define NL_GALAXY_STARS 2.0
-#define NL_SHOOTING_STAR_RATE 20.0
-#define NL_SHOOTING_STAR_LIFETIME 0.55
+#define NL_SHOOTING_STAR_RATE 3.5
+#define NL_SHOOTING_STAR_LIFETIME 0.48
 /* Subtle aurora and occasional shooting stars, mainly visible at night. */
 #define NL_AURORA 0.85
 #define NL_AURORA_VELOCITY 0.018
