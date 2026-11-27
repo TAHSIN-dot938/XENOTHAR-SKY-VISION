@@ -1,5 +1,5 @@
 name = "XENOTHAR SKY VISION"
-version = [2, 3, 0]
+version = [2, 3, 2]
 min_supported_mc_version = [1, 26, 60]
 description = '''
 §bXENOTHAR SKY VISION
@@ -17,7 +17,7 @@ XENOTHAR SKY VISION project configuration.
 Shader source build pipeline: Newb X Legacy by devendrn.
 Upstream source is obtained at build time. Refer to its repository for applicable licenses and notices.
 '''
-credits = "Original XENOTHAR v2.3 cinematic realism tuning."
+credits = "XENOTHAR v2.3.2 cinematic sky, lunar texture and meteor-shower tuning."
 
 [[subpack]]
 define = "REALISTIC_CLOUDS"
