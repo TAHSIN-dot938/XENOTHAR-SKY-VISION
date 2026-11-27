@@ -44,6 +44,26 @@ jobs:
       - name: Build Android resource pack
         working-directory: upstream
         run: ./build.sh pack -p android -v 2
+      - name: Normalize pack manifest version
+        working-directory: upstream
+        run: |
+          python - <<'PY'
+          import glob, json, os, tempfile, zipfile
+          for path in glob.glob("build/*.mcpack"):
+              with zipfile.ZipFile(path, "r") as src:
+                  entries = [(item, src.read(item.filename)) for item in src.infolist()]
+              output = path + ".tmp"
+              with zipfile.ZipFile(output, "w", zipfile.ZIP_DEFLATED) as dst:
+                  for info, data in entries:
+                      if info.filename == "manifest.json":
+                          manifest = json.loads(data.decode("utf-8"))
+                          manifest["header"]["version"] = [2, 3, 4]
+                          for module in manifest.get("modules", []):
+                              module["version"] = [2, 3, 4]
+                          data = json.dumps(manifest, indent=2).encode("utf-8")
+                      dst.writestr(info, data)
+              os.replace(output, path)
+          PY
       - name: Upload mcpack
         uses: actions/upload-artifact@v4
         with:
