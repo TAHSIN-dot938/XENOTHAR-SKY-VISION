@@ -1,6 +1,6 @@
 #ifndef NL_CONFIG_H
 #define NL_CONFIG_H
-/* XENOTHAR SKY VISION v2.3 — cinematic realism profile.
+/* XENOTHAR SKY VISION v2.4.0 — golden-hour cinematic lighting profile.
    Based on Newb X Legacy configuration; customized for Android/MB Loader.
    Renderer support depends on the Minecraft version and MB Loader build. */
 
@@ -18,7 +18,7 @@
 
 #define NL_NETHER_AMBIENT vec3(2.5,1.45,1.95)
 #define NL_END_AMBIENT vec3(1.45,0.82,2.15)
-#define NL_DAWN_SUNLIGHT_COL vec3(1.0,0.68,0.38)
+#define NL_DAWN_SUNLIGHT_COL vec3(1.0,0.49,0.20)
 #define NL_NOON_SUNLIGHT_COL vec3(1.0,0.94,0.84)
 #define NL_NIGHT_MOONLIGHT_COL vec3(0.16,0.22,0.48)
 
@@ -39,8 +39,8 @@
 
 /* Day palette stays naturally blue and bright, not overexposed. */
 #define NL_DAWN_ZENITH_COL vec3(0.12,0.30,0.55)
-#define NL_DAWN_HORIZON_COL vec3(1.15,0.42,0.48)
-#define NL_DAWN_EDGE_COL vec3(1.05,0.58,0.66)
+#define NL_DAWN_HORIZON_COL vec3(1.25,0.48,0.20)
+#define NL_DAWN_EDGE_COL vec3(1.12,0.62,0.32)
 #define NL_DAY_ZENITH_COL vec3(0.30,0.72,1.15)
 #define NL_DAY_HORIZON_COL vec3(0.92,1.18,1.35)
 #define NL_DAY_EDGE_COL vec3(1.05,1.18,1.30)
