@@ -6,14 +6,14 @@
 
 /* Colour: natural daylight, restrained dawn tint, deep blue night. */
 #define NL_TONEMAP_TYPE 3
-#define NL_GAMMA 1.30
+#define NL_GAMMA 1.42
 /* NL_TINT intentionally disabled to avoid a global colour cast. */
 
-/* Lighting: preserve block contrast without excessive brightness. */
-#define NL_SUNLIGHT_INTENSITY 3.0
+/* Lighting: brighter daytime visibility with stronger, higher-contrast shadows. */
+#define NL_SUNLIGHT_INTENSITY 3.35
 #define NL_TORCHLIGHT_INTENSITY 1.0
-#define NL_SHADOW_INTENSITY 0.72
-#define NL_MIN_LIGHTING_BOOST 1.25
+#define NL_SHADOW_INTENSITY 0.84
+#define NL_MIN_LIGHTING_BOOST 1.55
 #define NL_CLOUD_SHADOW
 
 #define NL_NETHER_AMBIENT vec3(2.5,1.45,1.95)
@@ -60,25 +60,26 @@
 #define NL_GLOW_SHIMMER 0.40
 #define NL_GLOW_SHIMMER_SPEED 0.65
 
-/* Gentle plant movement. */
-#define NL_PLANTS_WAVE 0.035
+/* More visible grass/foliage sway. This animates plants; it does not alter texture blade width. */
+#define NL_PLANTS_WAVE 0.095
 #define NL_LANTERN_WAVE 0.09
-#define NL_WAVE_SPEED 1.8
-#define NL_WAVE_RANGE 12.0
+#define NL_WAVE_SPEED 2.45
+#define NL_WAVE_RANGE 16.0
 
-/* Calm water with restrained surface movement. */
+/* More pronounced waves and the upstream shader's reflection-mask effect. */
 #define NL_WATER_TRANSPARENCY 0.88
-#define NL_WATER_BUMP 0.045
-#define NL_WATER_WAVE_SPEED 0.42
-#define NL_WATER_TEX_OPACITY 0.28
+#define NL_WATER_BUMP 0.075
+#define NL_WATER_WAVE_SPEED 0.72
+#define NL_WATER_TEX_OPACITY 0.34
 #define NL_WATER_WAVE
+#define NL_WATER_REFL_MASK
 #define NL_WATER_TINT vec3(0.48,0.76,0.92)
 
-/* Underwater: cool blue visibility, subtle caustics and light streaks. */
+/* Underwater: stronger refraction-like view distortion, caustics and light streaks. Blocks remain stationary; the view shimmer simulates moving water. */
 #define NL_UNDERWATER_BRIGHTNESS 0.88
-#define NL_CAUSTIC_INTENSITY 1.10
-#define NL_UNDERWATER_WAVE 0.045
-#define NL_UNDERWATER_STREAKS 0.65
+#define NL_CAUSTIC_INTENSITY 1.45
+#define NL_UNDERWATER_WAVE 0.12
+#define NL_UNDERWATER_STREAKS 0.82
 #define NL_UNDERWATER_TINT vec3(0.52,0.76,0.92)
 
 #define NL_CLOUD_TYPE 1
