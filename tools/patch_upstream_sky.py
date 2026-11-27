@@ -4,7 +4,7 @@ from pathlib import Path
 import math, random
 from PIL import Image, ImageDraw, ImageFilter
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[1] / "upstream"
 SKY = ROOT / "src/newb/functions/sky.h"
 MOON = ROOT / "assets/textures/environment/moon_phases.png"
 
