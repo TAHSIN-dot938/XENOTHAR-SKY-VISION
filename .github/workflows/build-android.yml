@@ -57,9 +57,10 @@ jobs:
                   for info, data in entries:
                       if info.filename == "manifest.json":
                           manifest = json.loads(data.decode("utf-8"))
+                          manifest["header"]["name"] = "XENOTHAR SKY VISION v2.4.0"
                           manifest["header"]["version"] = [2, 4, 0]
                           for module in manifest.get("modules", []):
-                              module["version"] = [2, 3, 4]
+                              module["version"] = [2, 4, 0]
                           data = json.dumps(manifest, indent=2).encode("utf-8")
                       dst.writestr(info, data)
               os.replace(output, path)
