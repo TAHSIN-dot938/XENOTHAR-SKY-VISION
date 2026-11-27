@@ -79,6 +79,22 @@ def patch_solar_cycle():
         source = source[:start] + section + source[end:]
         SKY.write_text(source, encoding="utf-8")
 
+
+def patch_golden_hour():
+    """Strengthen low-sun golden-hour shadow definition in the lighting shader."""
+    lighting = ROOT / "src/newb/functions/lighting.h"
+    source = lighting.read_text(encoding="utf-8")
+    anchor = "    shadow *= shade > 0.8 ? 1.0 : 0.8;"
+    addition = """    // XENOTHAR golden hour: stronger directional contrast as the sun approaches the horizon.
+    // Actual shadow direction/length follows Minecraft's low solar angle and renderer shadow map.
+    shadow *= mix(1.0, 0.76, dawnFactor);
+"""
+    if "// XENOTHAR golden hour:" not in source:
+        if anchor not in source:
+            raise RuntimeError("Could not locate directional shadow line for golden-hour patch")
+        source = source.replace(anchor, anchor + "\\n" + addition.rstrip(), 1)
+        lighting.write_text(source, encoding="utf-8")
+
 def make_moon_atlas():
     # Use a real equirectangular lunar surface map (8K source) and bake it
     # into Bedrock's 4x2 moon-phase atlas. The atlas keeps the game shader's
@@ -152,5 +168,6 @@ def make_moon_atlas():
 if __name__ == "__main__":
     patch_meteors()
     patch_solar_cycle()
+    patch_golden_hour()
     make_moon_atlas()
-    print("Patched meteor motion, time-driven solar halo, and real 8K-source lunar surface map into an 8-phase atlas.")
+    print("Patched meteor motion, time-driven solar halo, golden-hour shadow contrast, and real 8K-source lunar surface map into an 8-phase atlas.")
