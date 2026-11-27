@@ -1,19 +1,19 @@
 #ifndef NL_CONFIG_H
 #define NL_CONFIG_H
-/* XENOTHAR SKY VISION v2 — restrained natural colour profile.
+/* XENOTHAR SKY VISION v2.3 — cinematic realism profile.
    Based on Newb X Legacy configuration; customized for Android/MB Loader.
    Renderer support depends on the Minecraft version and MB Loader build. */
 
 /* Colour: natural daylight, restrained dawn tint, deep blue night. */
 #define NL_TONEMAP_TYPE 3
-#define NL_GAMMA 2.00
+#define NL_GAMMA 1.72
 /* NL_TINT intentionally disabled to avoid a global colour cast. */
 
-/* Lighting: high visibility in caves and shaded areas, while retaining a natural daylight palette. */
-#define NL_SUNLIGHT_INTENSITY 3.35
+/* Cinematic lighting: balanced daylight, readable caves, stronger shadow contrast. */
+#define NL_SUNLIGHT_INTENSITY 3.15
 #define NL_TORCHLIGHT_INTENSITY 1.0
-#define NL_SHADOW_INTENSITY 0.84
-#define NL_MIN_LIGHTING_BOOST 2.80
+#define NL_SHADOW_INTENSITY 0.92
+#define NL_MIN_LIGHTING_BOOST 2.10
 #define NL_CLOUD_SHADOW
 
 #define NL_NETHER_AMBIENT vec3(2.5,1.45,1.95)
@@ -27,10 +27,10 @@
 #define NL_NETHER_TORCH_COL vec3(1.0,0.46,0.22)
 #define NL_END_TORCH_COL vec3(0.72,0.48,1.0)
 
-/* Moderate atmospheric depth; do not darken daytime with dense fog. */
-#define NL_FOG 0.90
-#define NL_MIST_DENSITY 0.15
-#define NL_RAIN_MIST_OPACITY 0.10
+/* Controlled cinematic atmospheric depth; rain mist is stronger than clear-weather mist. */
+#define NL_FOG 0.96
+#define NL_MIST_DENSITY 0.19
+#define NL_RAIN_MIST_OPACITY 0.20
 #define NL_CLOUDY_FOG 0.10
 
 #define NL_SKY_VOID_FACTOR 0.50
@@ -56,8 +56,8 @@
 #define NL_RAINBOW_CLEAR 0.0
 #define NL_RAINBOW_RAIN 0.25
 
-#define NL_GLOW_TEX 1.8
-#define NL_GLOW_SHIMMER 0.40
+#define NL_GLOW_TEX 1.35
+#define NL_GLOW_SHIMMER 0.28
 #define NL_GLOW_SHIMMER_SPEED 0.65
 
 /* More visible grass/foliage sway. This animates plants; it does not alter texture blade width. */
@@ -66,19 +66,19 @@
 #define NL_WAVE_SPEED 2.45
 #define NL_WAVE_RANGE 16.0
 
-/* More pronounced waves and the upstream shader's reflection-mask effect. */
+/* Rain-ready water: stronger ripples and upstream reflection-mask support. */
 #define NL_WATER_TRANSPARENCY 0.88
-#define NL_WATER_BUMP 0.075
-#define NL_WATER_WAVE_SPEED 0.72
-#define NL_WATER_TEX_OPACITY 0.34
+#define NL_WATER_BUMP 0.095
+#define NL_WATER_WAVE_SPEED 0.78
+#define NL_WATER_TEX_OPACITY 0.40
 #define NL_WATER_WAVE
 #define NL_WATER_REFL_MASK
 #define NL_WATER_TINT vec3(0.48,0.76,0.92)
 
 /* Underwater: stronger refraction-like view distortion, caustics and light streaks. Blocks remain stationary; the view shimmer simulates moving water. */
 #define NL_UNDERWATER_BRIGHTNESS 0.88
-#define NL_CAUSTIC_INTENSITY 1.45
-#define NL_UNDERWATER_WAVE 0.12
+#define NL_CAUSTIC_INTENSITY 1.55
+#define NL_UNDERWATER_WAVE 0.14
 #define NL_UNDERWATER_STREAKS 0.82
 #define NL_UNDERWATER_TINT vec3(0.52,0.76,0.92)
 
@@ -128,10 +128,10 @@
 #define NL_SUN_TILT 45.0
 #define NL_MOON_TILT 45.0
 
-#define NL_GROUND_RAIN_WETNESS 0.78
-#define NL_GROUND_RAIN_PUDDLES 0.38
+#define NL_GROUND_RAIN_WETNESS 0.96
+#define NL_GROUND_RAIN_PUDDLES 0.72
 #define NL_ENTITY_BRIGHTNESS 0.90
-#define NL_ENTITY_EDGE_HIGHLIGHT 0.26
+#define NL_ENTITY_EDGE_HIGHLIGHT 0.18
 #define NL_WEATHER_SPECK 0.50
 #define NL_WEATHER_RAIN_SLANT 3.2
 #define NL_WEATHER_PARTICLE_SIZE 0.90
