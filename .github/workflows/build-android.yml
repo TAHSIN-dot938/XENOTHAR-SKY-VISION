@@ -7,6 +7,7 @@ on:
       - "src/newb/pack_config.toml"
       - "src/newb/config.h"
       - ".github/workflows/build-android.yml"
+      - "tools/patch_upstream_sky.py"
 
 permissions:
   contents: read
