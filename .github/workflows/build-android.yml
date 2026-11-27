@@ -5,6 +5,7 @@ on:
   push:
     paths:
       - "src/newb/pack_config.toml"
+      - "src/newb/config.h"
       - ".github/workflows/build-android.yml"
 
 permissions:
@@ -20,6 +21,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: devendrn/newb-x-mcbe
+          ref: 13e9c87749855cba8da7e381edaf586b9c8fd01f
           path: upstream
           submodules: recursive
       - name: Set up Python
@@ -30,7 +32,8 @@ jobs:
         working-directory: upstream
         run: python -m pip install -r requirements.txt
       - name: Configure branded pack
-        run: cp src/newb/pack_config.toml upstream/src/newb/pack_config.toml
+        run: |
+          cp src/newb/pack_config.toml upstream/src/newb/pack_config.toml
           cp src/newb/config.h upstream/src/newb/config.h
       - name: Set up upstream build environment
         working-directory: upstream
