@@ -92,7 +92,7 @@ def patch_golden_hour():
     if "// XENOTHAR golden hour:" not in source:
         if anchor not in source:
             raise RuntimeError("Could not locate directional shadow line for golden-hour patch")
-        source = source.replace(anchor, anchor + "\\n" + addition.rstrip(), 1)
+        source = source.replace(anchor, anchor + "\n" + addition.rstrip(), 1)
         lighting.write_text(source, encoding="utf-8")
 
 def make_moon_atlas():
