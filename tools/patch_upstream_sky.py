@@ -47,6 +47,38 @@ vec3 nlRenderShootingStar(vec3 viewDir, vec3 FOG_COLOR, float t) {
 }'''
     SKY.write_text(source[:start] + replacement + source[end:], encoding="utf-8")
 
+
+def patch_solar_cycle():
+    """Add a time-of-day solar halo without changing the upstream Sun/Moon draw path."""
+    source = SKY.read_text(encoding="utf-8")
+    start = source.index("vec3 renderOverworldSky(")
+    end = source.index("\\nvec3 renderEndSky(", start)
+    section = source[start:end]
+    marker = "  return sky;\\n}"
+    if "// XENOTHAR solar-cycle glow" not in section:
+        if marker not in section:
+            raise RuntimeError("Could not locate renderOverworldSky return point for solar-cycle patch")
+        glow = r'''  // XENOTHAR solar-cycle glow: warm atmospheric halo at dawn, golden hour and sunset.
+  // env.dayFactor and env.sunDir are derived from Minecraft TIME_OF_DAY.
+  float sunAlignment = max(dot(normalize(env.sunDir), normalize(viewDir)), 0.0);
+  float twilight = 1.0 - smoothstep(0.015, 0.62, abs(env.dayFactor));
+  float sunVisible = smoothstep(-0.12, 0.055, env.sunDir.y);
+  float clearSky = 1.0 - env.rainFactor * 0.88;
+  float innerGlow = exp(-max(0.0, 1.0 - sunAlignment) * 46.0);
+  float outerGlow = exp(-max(0.0, 1.0 - sunAlignment) * 8.0);
+  vec3 goldenGlow = vec3(1.0, 0.62, 0.27);
+  vec3 redGlow = vec3(1.0, 0.19, 0.075);
+  vec3 twilightGlow = mix(goldenGlow, redGlow, smoothstep(0.12, 0.88, twilight));
+  vec3 solarGlowColor = mix(goldenGlow, twilightGlow, twilight);
+  float glowStrength = sunVisible * clearSky * (0.12 * outerGlow + 0.18 * innerGlow);
+  sky += solarGlowColor * glowStrength;
+
+  return sky;
+}'''
+        section = section.replace(marker, glow, 1)
+        source = source[:start] + section + source[end:]
+        SKY.write_text(source, encoding="utf-8")
+
 def make_moon_atlas():
     # Use a real equirectangular lunar surface map (8K source) and bake it
     # into Bedrock's 4x2 moon-phase atlas. The atlas keeps the game shader's
@@ -119,5 +151,6 @@ def make_moon_atlas():
 
 if __name__ == "__main__":
     patch_meteors()
+    patch_solar_cycle()
     make_moon_atlas()
-    print("Patched 3.5 meteor starts/sec with corrected travel direction and baked real 8K-source lunar surface map into an 8-phase atlas.")
+    print("Patched meteor motion, time-driven solar halo, and real 8K-source lunar surface map into an 8-phase atlas.")
