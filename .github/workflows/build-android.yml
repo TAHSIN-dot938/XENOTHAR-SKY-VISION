@@ -43,7 +43,7 @@ jobs:
         run: chmod +x build.sh && ./build.sh setup
       - name: Build Android resource pack
         working-directory: upstream
-        run: ./build.sh pack -p android -v 1
+        run: ./build.sh pack -p android -v 2
       - name: Upload mcpack
         uses: actions/upload-artifact@v4
         with:
