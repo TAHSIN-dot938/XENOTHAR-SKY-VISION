@@ -12,7 +12,7 @@
 /* Directional daylight and sun/moon shadows use upstream light-direction logic; keep cave fill restrained. */
 #define NL_SUNLIGHT_INTENSITY 3.15
 #define NL_TORCHLIGHT_INTENSITY 1.0
-#define NL_SHADOW_INTENSITY 0.88
+#define NL_SHADOW_INTENSITY 0.94
 #define NL_MIN_LIGHTING_BOOST 1.85
 #define NL_CLOUD_SHADOW
 
