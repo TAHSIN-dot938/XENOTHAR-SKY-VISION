@@ -35,6 +35,8 @@ jobs:
         run: |
           cp src/newb/pack_config.toml upstream/src/newb/pack_config.toml
           cp src/newb/config.h upstream/src/newb/config.h
+          python -m pip install pillow
+          python tools/patch_upstream_sky.py
       - name: Set up upstream build environment
         working-directory: upstream
         run: chmod +x build.sh && ./build.sh setup
