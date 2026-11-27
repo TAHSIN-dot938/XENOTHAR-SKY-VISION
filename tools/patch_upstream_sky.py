@@ -81,19 +81,69 @@ def patch_solar_cycle():
 
 
 def patch_golden_hour():
-    """Strengthen low-sun golden-hour shadow definition in the lighting shader."""
+    """Apply time-driven golden sunlight and shadow contrast to the actual lighting path."""
     lighting = ROOT / "src/newb/functions/lighting.h"
     source = lighting.read_text(encoding="utf-8")
-    anchor = "    shadow *= shade > 0.8 ? 1.0 : 0.8;"
-    addition = """    // XENOTHAR golden hour: stronger directional contrast as the sun approaches the horizon.
-    // Actual shadow direction/length follows Minecraft's low solar angle and renderer shadow map.
-    shadow *= mix(1.0, 0.76, dawnFactor);
-"""
-    if "// XENOTHAR golden hour:" not in source:
-        if anchor not in source:
-            raise RuntimeError("Could not locate directional shadow line for golden-hour patch")
-        source = source.replace(anchor, anchor + "\n" + addition.rstrip(), 1)
-        lighting.write_text(source, encoding="utf-8")
+
+    tint_old = """  tint = mix(tint, NL_DAWN_SUNLIGHT_COL, dawnFactor);
+  tint = mix(tint, vec3_splat(dot(tint, vec3_splat(0.33))), rain);
+  return tint;"""
+    tint_new = """  tint = mix(tint, NL_DAWN_SUNLIGHT_COL, dawnFactor);
+  // XENOTHAR: warm amber sunlight during the low-sun window, not a global screen tint.
+  tint = mix(tint, vec3(1.0, 0.49, 0.20), 0.62 * clamp(dawnFactor, 0.0, 1.0));
+  tint = mix(tint, vec3_splat(dot(tint, vec3_splat(0.33))), rain);
+  return tint;"""
+    if "// XENOTHAR: warm amber sunlight" not in source:
+        if tint_old not in source:
+            raise RuntimeError("Could not locate sunLightTint() blend point")
+        source = source.replace(tint_old, tint_new, 1)
+
+    shadow_old = "    shadow *= shade > 0.8 ? 1.0 : 0.8;"
+    shadow_new = """    shadow *= shade > 0.8 ? 1.0 : 0.8;
+    // XENOTHAR: preserve fully lit surfaces while deepening only shadowed areas at golden hour.
+    float goldenHour = clamp(dawnFactor, 0.0, 1.0);
+    shadow = clamp(1.0 - (1.0 - shadow) * mix(1.0, 1.42, goldenHour), 0.0, 1.0);"""
+    if "// XENOTHAR: preserve fully lit surfaces" not in source:
+        if shadow_old not in source:
+            raise RuntimeError("Could not locate direct-light shadow factor")
+        source = source.replace(shadow_old, shadow_new, 1)
+
+    direct_old = "    light = (NL_SUNLIGHT_INTENSITY*shadow*sunLightAttenuation)*sunLightTint(env.dayFactor, env.rainFactor);"
+    direct_new = """    light = (NL_SUNLIGHT_INTENSITY*shadow*sunLightAttenuation)*sunLightTint(env.dayFactor, env.rainFactor);
+    // Slightly lift sunlit faces while the low sun produces warmer, clearer contrast.
+    light *= mix(1.0, 1.14, clamp(dawnFactor, 0.0, 1.0));"""
+    if "Slightly lift sunlit faces" not in source:
+        if direct_old not in source:
+            raise RuntimeError("Could not locate direct sunlight calculation")
+        source = source.replace(direct_old, direct_new, 1)
+
+    lighting.write_text(source, encoding="utf-8")
+
+    sky = ROOT / "src/newb/functions/sky.h"
+    sky_source = sky.read_text(encoding="utf-8")
+    sky_source = sky_source.replace(
+        "  vec3 goldenGlow = vec3(1.0, 0.62, 0.27);",
+        "  vec3 goldenGlow = vec3(1.0, 0.54, 0.20);"
+    )
+    sky_source = sky_source.replace(
+        "  vec3 redGlow = vec3(1.0, 0.19, 0.075);",
+        "  vec3 redGlow = vec3(1.0, 0.24, 0.10);"
+    )
+    sky_source = sky_source.replace(
+        "  float innerGlow = exp(-max(0.0, 1.0 - sunAlignment) * 46.0);",
+        "  float innerGlow = exp(-max(0.0, 1.0 - sunAlignment) * 30.0);"
+    )
+    sky_source = sky_source.replace(
+        "  float outerGlow = exp(-max(0.0, 1.0 - sunAlignment) * 8.0);",
+        "  float outerGlow = exp(-max(0.0, 1.0 - sunAlignment) * 4.8);"
+    )
+    sky_source = sky_source.replace(
+        "  float glowStrength = sunVisible * clearSky * (0.12 * outerGlow + 0.18 * innerGlow);",
+        "  float glowStrength = sunVisible * clearSky * (0.22 * outerGlow + 0.30 * innerGlow);"
+    )
+    if "// XENOTHAR solar-cycle glow" not in sky_source:
+        raise RuntimeError("Expected solar-cycle glow patch was not found in sky.h")
+    sky.write_text(sky_source, encoding="utf-8")
 
 def make_moon_atlas():
     # Use a real equirectangular lunar surface map (8K source) and bake it
@@ -170,4 +220,4 @@ if __name__ == "__main__":
     patch_solar_cycle()
     patch_golden_hour()
     make_moon_atlas()
-    print("Patched meteor motion, time-driven solar halo, golden-hour shadow contrast, and real 8K-source lunar surface map into an 8-phase atlas.")
+    print("Patched meteor motion, time-driven solar halo, warm golden-hour direct light and shadow contrast, and real lunar surface map.")
