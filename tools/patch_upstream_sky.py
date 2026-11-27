@@ -52,9 +52,9 @@ def patch_solar_cycle():
     """Add a time-of-day solar halo without changing the upstream Sun/Moon draw path."""
     source = SKY.read_text(encoding="utf-8")
     start = source.index("vec3 renderOverworldSky(")
-    end = source.index("\\nvec3 renderEndSky(", start)
+    end = source.index("\nvec3 renderEndSky(", start)
     section = source[start:end]
-    marker = "  return sky;\\n}"
+    marker = "  return sky;\n}"
     if "// XENOTHAR solar-cycle glow" not in section:
         if marker not in section:
             raise RuntimeError("Could not locate renderOverworldSky return point for solar-cycle patch")
