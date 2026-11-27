@@ -6,14 +6,14 @@
 
 /* Colour: natural daylight, restrained dawn tint, deep blue night. */
 #define NL_TONEMAP_TYPE 3
-#define NL_GAMMA 1.42
+#define NL_GAMMA 2.00
 /* NL_TINT intentionally disabled to avoid a global colour cast. */
 
-/* Lighting: brighter daytime visibility with stronger, higher-contrast shadows. */
+/* Lighting: high visibility in caves and shaded areas, while retaining a natural daylight palette. */
 #define NL_SUNLIGHT_INTENSITY 3.35
 #define NL_TORCHLIGHT_INTENSITY 1.0
 #define NL_SHADOW_INTENSITY 0.84
-#define NL_MIN_LIGHTING_BOOST 1.55
+#define NL_MIN_LIGHTING_BOOST 2.80
 #define NL_CLOUD_SHADOW
 
 #define NL_NETHER_AMBIENT vec3(2.5,1.45,1.95)
@@ -130,7 +130,7 @@
 
 #define NL_GROUND_RAIN_WETNESS 0.78
 #define NL_GROUND_RAIN_PUDDLES 0.38
-#define NL_ENTITY_BRIGHTNESS 0.68
+#define NL_ENTITY_BRIGHTNESS 0.90
 #define NL_ENTITY_EDGE_HIGHLIGHT 0.26
 #define NL_WEATHER_SPECK 0.50
 #define NL_WEATHER_RAIN_SLANT 3.2
