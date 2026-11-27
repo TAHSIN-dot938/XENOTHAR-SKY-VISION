@@ -1,10 +1,9 @@
-name = "XENOTHAR SKY VISION"
+name = "XENOTHAR SKY VISION v2.3.3"
 version = [2, 3, 3]
 min_supported_mc_version = [1, 26, 60]
 description = '''
 §bXENOTHAR SKY VISION
 §7Cinematic realism profile for Android / MB Loader
-§8v%v
 '''
 authors = ["XENOTHAR"]
 url = "https://github.com/TAHSIN-dot938/XENOTHAR-SKY-VISION"
