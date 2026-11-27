@@ -53,9 +53,9 @@ def make_moon_atlas():
     atlas = Image.new("RGBA", (size * cols, size * rows), (0, 0, 0, 0))
     rng = random.Random(29032026)
     craters = []
-    for _ in range(190):
+    for _ in range(65):
         x, y = rng.uniform(-0.92, 0.92), rng.uniform(-0.92, 0.92)
-        rad = rng.uniform(0.008, 0.085)
+        rad = rng.uniform(0.018, 0.095)
         if x*x + y*y < 0.92:
             craters.append((x, y, rad, rng.uniform(0.25, 0.85)))
     for phase_index in range(8):
@@ -79,7 +79,7 @@ def make_moon_atlas():
                 n = (math.sin(nx*43.0 + math.sin(ny*21.0))*0.5 +
                      math.sin(ny*57.0 + nx*19.0)*0.25 +
                      math.sin((nx+ny)*113.0)*0.12)
-                shade = 0.68 + 0.12*n + 0.20*illumination
+                shade = 0.48 + 0.12*n + 0.40*illumination
                 # Soft terminator, natural limb darkening.
                 shade *= 0.72 + 0.28*nz
                 crater_delta = 0.0
@@ -89,11 +89,11 @@ def make_moon_atlas():
                     if d < cr*1.35:
                         ring = math.exp(-((d-cr*0.82)/(cr*0.13))**2)
                         basin = math.exp(-((d)/(cr*0.72))**2)
-                        crater_delta += 0.13*ring - 0.11*basin*depth
+                        crater_delta += 0.045*ring - 0.105*basin*depth
                 shade = max(0.0, min(1.0, shade + crater_delta))
                 # Moon texture stays subdued, neutral grey, not over-saturated.
                 val = int(255 * shade)
-                alpha = int(255 * min(1.0, illumination*1.25 + 0.03))
+                alpha = int(255 * max(0.0, min(1.0, (illumination - 0.045) / 0.16)))
                 px[x,y] = (val, int(val*0.985), int(val*0.95), alpha)
         tile = tile.filter(ImageFilter.GaussianBlur(0.25))
         atlas.alpha_composite(tile, ((phase_index % cols)*size, (phase_index // cols)*size))
