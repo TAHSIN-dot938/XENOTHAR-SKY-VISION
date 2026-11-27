@@ -1,0 +1,50 @@
+name = "XENOTHAR SKY VISION"
+version = [1, 0, 0]
+min_supported_mc_version = [1, 26, 60]
+description = '''
+§bXENOTHAR SKY VISION
+§7Android visual pack for MB Loader
+§8v%v
+'''
+authors = ["XENOTHAR"]
+url = "https://github.com/TAHSIN-dot938/XENOTHAR-SKY-VISION"
+uuid = "8c60a86d-15d0-4e83-9b1d-6e5d0e4c6f21"
+materials = ["Actor", "ActorGlint", "ActorMultiTexture", "Clouds", "EndSky", "ItemInHandColor", "ItemInHandColorGlint", "ItemInHandTextured", "RenderChunk", "Sky", "Stars", "SunMoon", "Weather"]
+
+[info]
+copyright = '''
+XENOTHAR SKY VISION project configuration.
+Shader source build pipeline: Newb X Legacy by devendrn.
+Upstream source is obtained at build time. Refer to its repository for applicable licenses and notices.
+'''
+credits = "Visual direction based on supplied screenshots."
+
+[[subpack]]
+define = "REALISTIC_CLOUDS"
+materials = ["Clouds", "RenderChunk"]
+description = "Realistic cloud profile"
+
+[[subpack]]
+define = "ROUNDED_CLOUDS"
+materials = ["Clouds"]
+description = "Rounded cloud profile"
+
+[[subpack]]
+define = "BOX_CLOUDS"
+materials = ["Clouds", "RenderChunk"]
+description = "Box cloud profile"
+
+[[subpack]]
+define = "NO_WAVE"
+materials = ["RenderChunk"]
+description = "Reduced wave effects for performance"
+
+[[subpack]]
+define = "NO_FOG"
+materials = ["RenderChunk"]
+description = "Reduced fog"
+
+[[subpack]]
+define = "DEFAULT"
+materials = []
+description = "Balanced default profile"
