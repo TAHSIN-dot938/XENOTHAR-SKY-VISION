@@ -1,10 +1,9 @@
-name = "XENOTHAR SKY VISION"
-version = [2, 2, 1]
+name = "XENOTHAR SKY VISION v2.3.4"
+version = [2, 3, 4]
 min_supported_mc_version = [1, 26, 60]
 description = '''
 §bXENOTHAR SKY VISION
-§7Natural Android visual pack for MB Loader
-§8v%v
+§7Cinematic realism profile for Android / MB Loader
 '''
 authors = ["XENOTHAR"]
 url = "https://github.com/TAHSIN-dot938/XENOTHAR-SKY-VISION"
@@ -17,7 +16,7 @@ XENOTHAR SKY VISION project configuration.
 Shader source build pipeline: Newb X Legacy by devendrn.
 Upstream source is obtained at build time. Refer to its repository for applicable licenses and notices.
 '''
-credits = "Original XENOTHAR v2 natural visual tuning."
+credits = "XENOTHAR v2.3.4 cinematic sky, real lunar surface atlas and meteor-shower tuning. Moon map: Solar System Scope, CC BY 4.0."
 
 [[subpack]]
 define = "REALISTIC_CLOUDS"
@@ -47,4 +46,4 @@ description = "Reduced fog"
 [[subpack]]
 define = "DEFAULT"
 materials = []
-description = "Full-bright caves · brighter daylight · natural colours"
+description = "Cinematic lighting · rain puddles · enhanced water reflections"

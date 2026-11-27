@@ -44,3 +44,7 @@ The shader source/build pipeline is based on [Newb X Legacy](https://github.com/
 3. In Minecraft, activate **XENOTHAR SKY VISION** under Global Resources.
 4. Start Minecraft through MB Loader as required by your MB Loader setup.
 5. Begin with **Balanced default**. If performance or compatibility is poor, try **Reduced wave effects**.
+
+
+## Moon texture attribution
+The in-pack lunar surface atlas is adapted from the 8K Solar System Scope Moon texture, based on NASA lunar elevation and imagery data. Source: https://commons.wikimedia.org/wiki/File:Solarsystemscope_texture_8k_moon.jpg. Licensed under Creative Commons Attribution 4.0 International (CC BY 4.0). The atlas is converted to Bedrock's eight moon phases by the build script.
