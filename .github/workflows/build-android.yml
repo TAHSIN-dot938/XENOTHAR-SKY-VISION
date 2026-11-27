@@ -1,0 +1,46 @@
+name: Build Android pack
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "src/newb/pack_config.toml"
+      - ".github/workflows/build-android.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout XENOTHAR project
+        uses: actions/checkout@v4
+      - name: Checkout upstream shader source
+        uses: actions/checkout@v4
+        with:
+          repository: devendrn/newb-x-mcbe
+          path: upstream
+          submodules: recursive
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install pinned dependencies
+        working-directory: upstream
+        run: python -m pip install -r requirements.txt
+      - name: Configure branded pack
+        run: cp src/newb/pack_config.toml upstream/src/newb/pack_config.toml
+      - name: Set up upstream build environment
+        working-directory: upstream
+        run: chmod +x build.sh && ./build.sh setup
+      - name: Build Android resource pack
+        working-directory: upstream
+        run: ./build.sh pack -p android -v 1
+      - name: Upload mcpack
+        uses: actions/upload-artifact@v4
+        with:
+          name: XENOTHAR-SKY-VISION-Android
+          path: upstream/build/*.mcpack
+          if-no-files-found: error
+          retention-days: 14
