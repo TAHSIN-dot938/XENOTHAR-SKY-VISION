@@ -1,33 +1,46 @@
 # XENOTHAR SKY VISION
 
-An Android-focused Minecraft Bedrock visual-pack project for MB Loader.
+A custom Android-oriented Minecraft Bedrock visual pack for MB Loader, built from shader source and tuned around the project's blue moonlit Overworld and violet/pink cosmic End references.
 
 ## Target
 - Minecraft Bedrock 1.26.60+
-- Android with MB Loader
-- Visual direction: moonlit blue Overworld sky and a purple/pink cosmic End, based on the project's supplied visual references.
-- Performance target: conservative wave and reflection effects; prioritize stable frame pacing on mid-range Adreno devices.
+- Android using MB Loader / the compatible RenderDragon material pipeline
+- Conservative water movement and restrained visual complexity for mid-range devices
 
-## Planned visual modules
-- Overworld: day/night sky, stars, moon/sun presentation, cloud styling and atmospheric color.
-- Water: restrained wave motion and reflection-style appearance where the supported RenderDragon pipeline permits it.
-- Underwater: blue depth atmosphere and carefully limited light/visibility effects.
-- World: lightweight foliage motion and shadow/lighting refinements where supported.
-- The End: purple/pink cosmic atmosphere inspired by the supplied reference.
+## Included in v1.0.1 Android build
+- Custom blue/violet day, dusk and night color grading.
+- Sun, moon and star rendering with sunrise/sunset color transitions from the shader pipeline.
+- Moving soft clouds, optional rounded/box/realistic cloud subpacks.
+- Night aurora and occasional shooting-star effects supported by the upstream shader code.
+- Tuned block lighting, shadow strength, glow and foliage/lantern wave settings.
+- Calm water wave/bump tuning and blue underwater atmosphere with restrained caustics/streaks.
+- Purple cosmic End sky/fog palette.
+- Optional reduced-wave and reduced-fog subpacks.
 
-## Important compatibility note
-This project targets MB Loader, not the official Vibrant Visuals pipeline. Actual shader features depend on the Minecraft version, RenderDragon material format and MB Loader compatibility. Features that cannot be implemented by the selected material pipeline will not be advertised as working.
+## Subpacks
+- **Balanced default** — custom tuned visual profile.
+- **Realistic cloud profile** — more detailed cloud rendering.
+- **Rounded cloud profile** — rounded cloud shape.
+- **Box cloud profile** — vanilla-style cloud geometry path.
+- **Reduced wave effects** — disables plant, lantern and water wave motion.
+- **Reduced fog** — disables shader fog.
+
+## Compatibility and testing
+The Android resource pack compiled successfully in GitHub Actions from the pinned upstream source revision. The generated .mcpack archive passed ZIP integrity validation and contains compiled RenderDragon material binaries.
+
+A successful build is not the same as an in-game device test. This pack has not yet been verified on the target phone or inside the user's exact MB Loader installation. Visual output and individual effects still depend on the Minecraft build, RenderDragon and MB Loader compatibility. If the loader rejects the pack or a feature does not render, report the exact error/screenshot so the material path can be adjusted. This project targets MB Loader, not the official Vibrant Visuals pipeline.
 
 ## Build
-The Android build workflow checks out the upstream Newb X Legacy source, applies this project's pack configuration, installs its pinned build dependencies and builds an Android mcpack artifact. Run it from Actions > Build Android pack > Run workflow.
+GitHub Actions builds the Android .mcpack on pushes to the shader configuration or workflow, and can also be run manually from Actions > Build Android pack.
 
-The first build is a branded compatibility baseline. Custom material effects are developed and validated incrementally; the full visual wishlist is not claimed complete until tested in-game.
+The workflow pins Newb X Legacy source to a specific commit and applies this project's own pack configuration and shader tuning before compiling.
 
-## Upstream
-Build pipeline: [Newb X Legacy](https://github.com/devendrn/newb-x-mcbe) by devendrn. See the upstream repository for its source license and compiled-pack redistribution terms. This project builds from upstream source rather than redistributing its compiled pack.
+## Upstream and licensing
+The shader source/build pipeline is based on [Newb X Legacy](https://github.com/devendrn/newb-x-mcbe) by devendrn. The upstream source repository identifies its source code as MIT-licensed. The project builds from source and does not redistribute the upstream project's precompiled pack. See the upstream repository for full notices and asset terms.
 
 ## Install
-1. Download the mcpack from the successful GitHub Actions run artifact.
-2. Import it into Minecraft.
-3. Activate it in Global Resources.
-4. Launch Minecraft through MB Loader.
+1. Download `XENOTHAR-SKY-VISION-Android.mcpack`.
+2. Open the file and choose Minecraft to import it.
+3. In Minecraft, activate **XENOTHAR SKY VISION** under Global Resources.
+4. Start Minecraft through MB Loader as required by your MB Loader setup.
+5. Begin with **Balanced default**. If performance or compatibility is poor, try **Reduced wave effects**.
