@@ -9,11 +9,11 @@
 #define NL_GAMMA 1.72
 /* NL_TINT intentionally disabled to avoid a global colour cast. */
 
-/* Cinematic lighting: balanced daylight, readable caves, stronger shadow contrast. */
+/* Directional daylight and sun/moon shadows use upstream light-direction logic; keep cave fill restrained. */
 #define NL_SUNLIGHT_INTENSITY 3.15
 #define NL_TORCHLIGHT_INTENSITY 1.0
-#define NL_SHADOW_INTENSITY 0.92
-#define NL_MIN_LIGHTING_BOOST 2.10
+#define NL_SHADOW_INTENSITY 0.88
+#define NL_MIN_LIGHTING_BOOST 1.85
 #define NL_CLOUD_SHADOW
 
 #define NL_NETHER_AMBIENT vec3(2.5,1.45,1.95)
@@ -66,10 +66,10 @@
 #define NL_WAVE_SPEED 2.45
 #define NL_WAVE_RANGE 16.0
 
-/* Rain-ready water: stronger ripples and upstream reflection-mask support. */
+/* Rain-ready water: restrained physical ripples, Fresnel sky reflection and reflection masking. */
 #define NL_WATER_TRANSPARENCY 0.88
-#define NL_WATER_BUMP 0.095
-#define NL_WATER_WAVE_SPEED 0.78
+#define NL_WATER_BUMP 0.082
+#define NL_WATER_WAVE_SPEED 0.72
 #define NL_WATER_TEX_OPACITY 0.40
 #define NL_WATER_WAVE
 #define NL_WATER_REFL_MASK
@@ -128,8 +128,8 @@
 #define NL_SUN_TILT 45.0
 #define NL_MOON_TILT 45.0
 
-#define NL_GROUND_RAIN_WETNESS 0.96
-#define NL_GROUND_RAIN_PUDDLES 0.72
+#define NL_GROUND_RAIN_WETNESS 1.0
+#define NL_GROUND_RAIN_PUDDLES 0.84
 #define NL_ENTITY_BRIGHTNESS 0.90
 #define NL_ENTITY_EDGE_HIGHLIGHT 0.18
 #define NL_WEATHER_SPECK 0.50
